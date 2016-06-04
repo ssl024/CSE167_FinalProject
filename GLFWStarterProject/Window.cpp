@@ -32,12 +32,12 @@ void Window::initialize_objects()
 	// Sky box faces
 	std::vector<const GLchar*> faces;
 	// I had to rotate clockwise to get the correct orientations
-	faces.push_back("druid_ft.ppm"); // right
-	faces.push_back("druid_bk.ppm"); // left
-	faces.push_back("druid_up.ppm");
-	faces.push_back("druid_dn.ppm");
-	faces.push_back("druid_rt.ppm"); // back
-	faces.push_back("druid_lf.ppm"); // front 
+	faces.push_back("cloudtop_ft.ppm"); // right
+	faces.push_back("cloudtop_bk.ppm"); // left
+	faces.push_back("cloudtop_up.ppm");
+	faces.push_back("cloudtop_dn.ppm");
+	faces.push_back("cloudtop_rt.ppm"); // back
+	faces.push_back("cloudtop_lf.ppm"); // front 
 
 	// Create sky box object
 	skyBox = new SkyBox(faces);
