@@ -12,6 +12,9 @@ SkyBox * skyBox;
 // Water
 WaterTile * water;
 
+// Frame Buffer
+WaterFrameBuffer * waterFB;
+
 // Shader Programs
 ShaderProgram * cubeShader;
 ShaderProgram * skyBoxShader;
@@ -56,6 +59,9 @@ void Window::initialize_objects()
 
 	// Create water
 	water = new WaterTile(0.0f, 0.0f, 0.0f, waterShader);
+
+	// Create water frame buffer
+	waterFB = new WaterFrameBuffer();
 }
 
 void Window::clean_up()
@@ -147,7 +153,11 @@ void Window::display_callback(GLFWwindow* window)
 	// Clear the color and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	waterFB->bindReflectionFrameBuffer();
+
 	skyBox->draw();
+
+	waterFB->unbindCurrentFrameBuffer();
 
 	// Use the shader of programID
 	//waterShader->start();
@@ -155,6 +165,7 @@ void Window::display_callback(GLFWwindow* window)
 	// Render the cube
 	//cube->draw(waterShader->getShaderProgram());
 
+	skyBox->draw();
 	// Draw water
 	water->draw(camera);
 

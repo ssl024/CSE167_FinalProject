@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "SkyBox.h"
 #include "WaterTile.h"
+#include "WaterFrameBuffer.h"
 
 class Window
 {

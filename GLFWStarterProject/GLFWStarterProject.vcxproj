@@ -36,6 +36,7 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="WaterFrameBuffer.h" />
     <ClInclude Include="WaterShader.h" />
     <ClInclude Include="WaterTile.h" />
     <ClInclude Include="Window.h" />
@@ -49,6 +50,7 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="WaterFrameBuffer.cpp" />
     <ClCompile Include="WaterShader.cpp" />
     <ClCompile Include="WaterTile.cpp" />
     <ClCompile Include="Window.cpp" />
