@@ -11,12 +11,13 @@ GLfloat waterVertices[] = { -1, -1, 0,
 							-1, 1, 0,
 							1, 1, 0 };
 
-WaterTile::WaterTile(float centerX, float centerZ, float height, WaterShader * waterShader)
+WaterTile::WaterTile(float centerX, float centerZ, float height, WaterShader * waterShader, WaterFrameBuffer * waterFB)
 {
 	this->x = centerX;
 	this->z = centerZ;
 	this->height = height;
 	this->waterShader = waterShader;
+	this->waterFB = waterFB;
 
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(TILE_SIZE, 1.0f, TILE_SIZE));
 	model = glm::translate(scale, glm::vec3(x, height, z));
@@ -29,7 +30,7 @@ WaterTile::~WaterTile()
 {
 }
 
-void WaterTile::draw(Camera * camera)
+void WaterTile::draw(Camera * camera, glm::vec4 clipPlane)
 {
 	//prepareRender(camera);
 
@@ -42,6 +43,13 @@ void WaterTile::draw(Camera * camera)
 	waterShader->loadModelMatrix(model);
 	waterShader->loadViewMatrix(view);
 	waterShader->loadProjectionMatrix(projection);
+	waterShader->loadClipPlane(clipPlane);
+
+	// Activate texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, waterFB->getReflectionTexture());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, waterFB->getRefractionTexture());
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

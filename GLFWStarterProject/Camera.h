@@ -24,6 +24,8 @@ public:
 	glm::vec3 getDirection();
 	glm::vec3 getUp();
 
+	void setPosition(glm::vec3 newPosition);
+
 	glm::mat4 getLookAt();
 
 	float getPitch();

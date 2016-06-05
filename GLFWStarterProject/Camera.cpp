@@ -6,7 +6,7 @@ Camera::Camera()
 {
 	this->position = glm::vec3(0.0f, 0.0f, 20.0f);
 	this->distance = 20.0f;
-	this->direction = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->direction = glm::normalize(glm::vec3(0.0f) - position);
 	this->up = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
@@ -29,6 +29,12 @@ void Camera::update()
 	calculateCameraPosition(horizontalDistance, verticalDistance);
 
 	this->yaw = 180.0f - angleOrbit;
+
+	// Calculate up vector here
+	// Cross view direction with y axis
+	glm::vec3 newAxis = glm::cross(direction, glm::vec3(0.0f, 1.0f, 0.0f));
+	// Cross view direction with new axis to get up
+	up = glm::normalize(glm::cross(newAxis, direction));
 }
 
 glm::vec3 Camera::getPosition()
@@ -64,6 +70,11 @@ float Camera::getYaw()
 float Camera::getRoll()
 {
 	return this->roll;
+}
+
+void Camera::setPosition(glm::vec3 newPosition)
+{
+	this->position = newPosition;
 }
 
 void Camera::key_callback(int key, int scancode, int action, int mods) {}

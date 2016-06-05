@@ -8,6 +8,7 @@
 
 #include "WaterShader.h"
 #include "Camera.h"
+#include "WaterFrameBuffer.h"
 
 class WaterTile
 {
@@ -15,10 +16,10 @@ public:
 
 	static const float TILE_SIZE;
 
-	WaterTile(float centerX, float centerZ, float height, WaterShader * waterShader);
+	WaterTile(float centerX, float centerZ, float height, WaterShader * waterShader, WaterFrameBuffer * waterFB);
 	~WaterTile();
 
-	void draw(Camera * camera);
+	void draw(Camera * camera, glm::vec4 clipPlane);
 
 	float getHeight();
 	float getX();
@@ -33,11 +34,13 @@ private:
 	// Shader this water tile will use
 	WaterShader * waterShader;
 
+	WaterFrameBuffer * waterFB;
+
 	float height;
 	float x, z;
 
 	void loadVAO();
-	void prepareRender(Camera * camera);
+	//void prepareRender(Camera * camera);
 	void unbind();
 };
 

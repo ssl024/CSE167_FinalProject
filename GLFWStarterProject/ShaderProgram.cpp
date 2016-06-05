@@ -34,9 +34,19 @@ GLint ShaderProgram::getUniformLocation(GLchar * uniformName)
 	return glGetUniformLocation(programID, uniformName);
 }
 
+void ShaderProgram::loadInt(GLint location, GLint number)
+{
+	glUniform1i(location, number);
+}
+
 void ShaderProgram::loadMatrix4(GLint location, glm::mat4 matrix)
 {
 	glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
+}
+
+void ShaderProgram::loadVector4(GLint location, glm::vec4 vector4)
+{
+	glUniform4f(location, vector4.x, vector4.y, vector4.z, vector4.w);
 }
 
 GLuint ShaderProgram::loadShaders(const char * vertex_file_path, const char * fragment_file_path) {

@@ -32,9 +32,25 @@ void WaterShader::loadModelMatrix(glm::mat4 modelMatrix)
 	loadMatrix4(locationModelMatrix, modelMatrix);
 }
 
+void WaterShader::loadClipPlane(glm::vec4 planeVector)
+{
+	loadVector4(locationPlane, planeVector);
+}
+
+void WaterShader::connectTextureUnits()
+{
+	loadInt(locationReflectionTexture, 0);
+	loadInt(locationRefractionTexture, 1);
+	loadInt(locationdudvMap, 2);
+}
+
 void WaterShader::saveAllUniformLocations()
 {
 	this->locationProjectionMatrix = getUniformLocation("projectionMatrix");
 	this->locationViewMatrix = getUniformLocation("viewMatrix");
 	this->locationModelMatrix = getUniformLocation("modelMatrix");
+	this->locationPlane = getUniformLocation("clippingPlane");
+	this->locationReflectionTexture = getUniformLocation("reflectionTexture");
+	this->locationRefractionTexture = getUniformLocation("refractionTexture");
+	this->locationdudvMap = getUniformLocation("dudvMap");
 }

@@ -57,11 +57,13 @@ void Window::initialize_objects()
 	// Set skybox shader
 	skyBox->setSkyBoxShader(skyBoxShader->getShaderProgram());
 
-	// Create water
-	water = new WaterTile(0.0f, 0.0f, 0.0f, waterShader);
-
 	// Create water frame buffer
 	waterFB = new WaterFrameBuffer();
+
+	// Create water
+	water = new WaterTile(0.0f, 0.0f, 0.0f, waterShader, waterFB);
+
+	
 }
 
 void Window::clean_up()
@@ -153,11 +155,32 @@ void Window::display_callback(GLFWwindow* window)
 	// Clear the color and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glEnable(GL_CLIP_DISTANCE0);
+
+	// Get reflection
 	waterFB->bindReflectionFrameBuffer();
+
+	// Move camera below water
+	float distance = 2 * (camera->getPosition().y - water->getHeight());
+	camera->setPosition(glm::vec3(camera->getPosition().x, camera->getPosition().y - distance, camera->getPosition().z));
 
 	skyBox->draw();
 
+	water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 1.0f));
+
+	// Move camera back to normal
+	camera->setPosition(glm::vec3(camera->getPosition().x, camera->getPosition().y + distance, camera->getPosition().z));
+
+	// Get refraction
+	waterFB->bindRefractionFrameBuffer();
+
+	skyBox->draw();
+
+	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 1.0f));
+
+	// Get entire scene
 	waterFB->unbindCurrentFrameBuffer();
+	glDisable(GL_CLIP_DISTANCE0);
 
 	// Use the shader of programID
 	//waterShader->start();
@@ -166,8 +189,10 @@ void Window::display_callback(GLFWwindow* window)
 	//cube->draw(waterShader->getShaderProgram());
 
 	skyBox->draw();
+
+	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, 100.0f));
+
 	// Draw water
-	water->draw(camera);
 
 	// Gets events, including input such as keyboard and mouse or window resizing
 	glfwPollEvents();

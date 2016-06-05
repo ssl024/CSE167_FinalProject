@@ -15,10 +15,21 @@ public:
 	void loadViewMatrix(glm::mat4 viewMatrix);
 	void loadModelMatrix(glm::mat4 modelMatrix);
 
+	void loadClipPlane(glm::vec4 planeVector);
+
+	void connectTextureUnits();
 private:
 	GLint locationModelMatrix;
 	GLint locationViewMatrix;
 	GLint locationProjectionMatrix;
+
+	// Clipping plane
+	GLint locationPlane;
+
+	GLint locationReflectionTexture;
+	GLint locationRefractionTexture;
+
+	GLint locationdudvMap;
 
 	/*
 		saveAllUniformLocations

@@ -34,7 +34,11 @@ protected:
 
 	GLint getUniformLocation(GLchar * uniformName);
 
+	void loadInt(GLint location, GLint number);
+
 	void loadMatrix4(GLint location, glm::mat4 matrix);
+
+	void loadVector4(GLint location, glm::vec4 vector4);
 
 };
 
