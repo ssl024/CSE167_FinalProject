@@ -44,9 +44,19 @@ void ShaderProgram::loadMatrix4(GLint location, glm::mat4 matrix)
 	glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
 
+void ShaderProgram::loadVector3(GLint location, glm::vec3 vector3)
+{
+	glUniform3f(location, vector3.x, vector3.y, vector3.z);
+}
+
 void ShaderProgram::loadVector4(GLint location, glm::vec4 vector4)
 {
 	glUniform4f(location, vector4.x, vector4.y, vector4.z, vector4.w);
+}
+
+void ShaderProgram::loadFloat(GLint location, float floatValue)
+{
+	glUniform1f(location, floatValue);
 }
 
 GLuint ShaderProgram::loadShaders(const char * vertex_file_path, const char * fragment_file_path) {

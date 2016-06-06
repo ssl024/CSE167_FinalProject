@@ -4,6 +4,8 @@
 
 const float WaterTile::TILE_SIZE = 60.0f;
 
+const float WaterTile::WATER_SPEED = 0.0002f;
+
 GLfloat waterVertices[] = { -1, -1, 0,
 							-1, 1, 0,
 							1, -1, 0,
@@ -34,22 +36,30 @@ void WaterTile::draw(Camera * camera, glm::vec4 clipPlane)
 {
 	//prepareRender(camera);
 
+	moveFactor += WATER_SPEED;
+	if (moveFactor > 1.0f)
+		moveFactor = 0.0f;
+
 	// Activate shader program
 	waterShader->start();
 
-	glm::mat4 view = Window::V;
+	glm::mat4 view = camera->getLookAt();
 	glm::mat4 projection = Window::P;
 
 	waterShader->loadModelMatrix(model);
 	waterShader->loadViewMatrix(view);
 	waterShader->loadProjectionMatrix(projection);
 	waterShader->loadClipPlane(clipPlane);
+	waterShader->loadCameraPosition(camera->getPosition());
+	waterShader->loadMoveFactor(moveFactor);
 
 	// Activate texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, waterFB->getReflectionTexture());
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, waterFB->getRefractionTexture());
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, waterFB->getdudvMapTexture());
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

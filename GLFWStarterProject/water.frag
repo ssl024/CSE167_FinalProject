@@ -15,7 +15,7 @@ uniform sampler2D dudvMap;
 uniform float moveFactor;
 
 // How strong the distortion is
-const float waveStrength = 0.02;
+const float waveStrength = 0.03;
 
 void main() {
 
@@ -24,14 +24,17 @@ void main() {
 	vec2 ndc = (clipSpace.xy/clipSpace.w)/2.0 + 0.5;
 
 	// Map distortion to texture and we only care about red/green values
-	vec2 distortion1 = (texture(dudvMap, vec2(textureCoordinates.x, textureCoordinates.y)).rg * 2.0 - 1.0) * waveStrength;
+	vec2 distortion1 = (texture(dudvMap, vec2(textureCoordinates.x + moveFactor, textureCoordinates.y)).rg * 2.0 - 1.0) * waveStrength;
+	vec2 distortion2 = (texture(dudvMap, vec2(textureCoordinates.x + moveFactor, textureCoordinates.y + 0.5)).rg * 2.0 - 1.0) * waveStrength;
+	vec2 totalDistortion = distortion1 + distortion2;
+
 
 	vec2 reflectTexCoords = vec2(ndc.x, -ndc.y);
 	vec2 refractTexCoords = vec2(ndc.x, ndc.y);
 
 	// Add the distortion to reflection/refraction
-	reflectTexCoords += distortion1;
-	refractTexCoords += distortion1;
+	reflectTexCoords += totalDistortion;
+	refractTexCoords += totalDistortion;
 
 	// Clamp reflection and refraction to prevent edge of screen texture problems
 	reflectTexCoords.x = clamp(reflectTexCoords.x, 0.001, 0.999);
@@ -42,4 +45,5 @@ void main() {
 	vec4 refractColor = texture(refractionTexture, refractTexCoords);
 
 	color = mix(reflectColor, refractColor, 0.5);
+	color = mix(color, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
 }

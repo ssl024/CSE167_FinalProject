@@ -14,7 +14,7 @@ public:
 	static const int REFRACTION_WIDTH = 1280;
 	static const int REFRACTION_HEIGHT = 720;
 
-	WaterFrameBuffer();
+	WaterFrameBuffer(const GLchar* dudvMapFile);
 	~WaterFrameBuffer();
 
 	void bindReflectionFrameBuffer();
@@ -29,6 +29,9 @@ public:
 
 	GLuint getRefractionDepthTexture();
 
+	GLuint getdudvMapTexture();
+
+	GLuint getTextureFromPPM(const GLchar * file);
 
 private:
 
@@ -40,9 +43,13 @@ private:
 	GLuint refractionTexture;
 	GLuint refractionDepthTexture;
 
+	GLuint dudvMapTexture;
+
 	void initializeReflectionFrameBuffer();
 
 	void initializeRefractionFrameBuffer();
+
+	void initializedudvMap(const GLchar * file);
 
 	void bindFrameBuffer(GLuint frameBuffer, int width, int height);
 
@@ -53,6 +60,8 @@ private:
 	GLuint createDepthTextureAttachment(int width, int height);
 
 	GLuint createDepthBufferAttachment(int width, int height);
+
+	unsigned char* loadPPM(const char* filename, int& width, int& height);
 };
 
 #endif

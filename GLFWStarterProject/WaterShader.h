@@ -17,11 +17,16 @@ public:
 
 	void loadClipPlane(glm::vec4 planeVector);
 
+	void loadCameraPosition(glm::vec3 cameraPosition);
+
+	void loadMoveFactor(float moveFactor);
+
 	void connectTextureUnits();
 private:
 	GLint locationModelMatrix;
 	GLint locationViewMatrix;
 	GLint locationProjectionMatrix;
+	GLint locationCameraPosition;
 
 	// Clipping plane
 	GLint locationPlane;
@@ -30,6 +35,8 @@ private:
 	GLint locationRefractionTexture;
 
 	GLint locationdudvMap;
+
+	GLint locationMoveFactor;
 
 	/*
 		saveAllUniformLocations

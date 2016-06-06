@@ -37,6 +37,16 @@ void WaterShader::loadClipPlane(glm::vec4 planeVector)
 	loadVector4(locationPlane, planeVector);
 }
 
+void WaterShader::loadCameraPosition(glm::vec3 cameraPosition)
+{
+	loadVector3(locationCameraPosition, cameraPosition);
+}
+
+void WaterShader::loadMoveFactor(float moveFactor)
+{
+	loadFloat(locationMoveFactor, moveFactor);
+}
+
 void WaterShader::connectTextureUnits()
 {
 	loadInt(locationReflectionTexture, 0);
@@ -53,4 +63,6 @@ void WaterShader::saveAllUniformLocations()
 	this->locationReflectionTexture = getUniformLocation("reflectionTexture");
 	this->locationRefractionTexture = getUniformLocation("refractionTexture");
 	this->locationdudvMap = getUniformLocation("dudvMap");
+	this->locationMoveFactor = getUniformLocation("moveFactor");
+	this->locationCameraPosition = getUniformLocation("cameraPosition");
 }

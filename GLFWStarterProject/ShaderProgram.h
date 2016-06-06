@@ -14,6 +14,7 @@ using namespace std;
 
 #include <GL/glew.h>
 #include <glm/mat4x4.hpp> // glm::mat4
+#include <glm/vec3.hpp>
 
 class ShaderProgram
 {
@@ -38,7 +39,11 @@ protected:
 
 	void loadMatrix4(GLint location, glm::mat4 matrix);
 
+	void loadVector3(GLint location, glm::vec3 vec3);
+
 	void loadVector4(GLint location, glm::vec4 vector4);
+
+	void loadFloat(GLint location, float floatValue);
 
 };
 

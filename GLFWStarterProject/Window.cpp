@@ -58,7 +58,7 @@ void Window::initialize_objects()
 	skyBox->setSkyBoxShader(skyBoxShader->getShaderProgram());
 
 	// Create water frame buffer
-	waterFB = new WaterFrameBuffer();
+	waterFB = new WaterFrameBuffer("waterdudv2.ppm");
 
 	// Create water
 	water = new WaterTile(0.0f, 0.0f, 0.0f, waterShader, waterFB);
@@ -157,6 +157,8 @@ void Window::display_callback(GLFWwindow* window)
 
 	glEnable(GL_CLIP_DISTANCE0);
 
+	
+
 	// Get reflection
 	waterFB->bindReflectionFrameBuffer();
 
@@ -166,7 +168,7 @@ void Window::display_callback(GLFWwindow* window)
 
 	skyBox->draw();
 
-	water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 1.0f));
+	water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 0.2f));
 
 	// Move camera back to normal
 	camera->setPosition(glm::vec3(camera->getPosition().x, camera->getPosition().y + distance, camera->getPosition().z));
@@ -176,7 +178,7 @@ void Window::display_callback(GLFWwindow* window)
 
 	skyBox->draw();
 
-	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 1.0f));
+	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 0.2f));
 
 	// Get entire scene
 	waterFB->unbindCurrentFrameBuffer();

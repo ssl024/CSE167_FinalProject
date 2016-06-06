@@ -15,6 +15,7 @@ class WaterTile
 public:
 
 	static const float TILE_SIZE;
+	static const float WATER_SPEED;
 
 	WaterTile(float centerX, float centerZ, float height, WaterShader * waterShader, WaterFrameBuffer * waterFB);
 	~WaterTile();
@@ -38,6 +39,8 @@ private:
 
 	float height;
 	float x, z;
+
+	float moveFactor = 0.0f;
 
 	void loadVAO();
 	//void prepareRender(Camera * camera);
