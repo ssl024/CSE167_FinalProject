@@ -33,6 +33,17 @@ ShaderProgram * dragonShader;
 
 // Flags
 bool stop = false;
+bool paused = false;
+bool stopWater = false;
+bool stopTrees = false;
+
+// L System
+LSystem * t1, *t2, *t3;
+LSystem * t4, *t5, *t6;
+LSystem * t7, *t8, *t9;
+
+// Sound System
+irrklang::ISoundEngine * SoundEngine;
 
 
 int Window::width;
@@ -52,6 +63,22 @@ void Window::initialize_objects()
 	bearObj = new OBJObject("bear.obj");
 	bunnyObj = new OBJObject("bunny.obj");
 	dragonObj = new OBJObject("dragon.obj");
+
+	// L System
+	t1 = new LSystem("B", "AA", "Ax[-B/]x+B", 10, 30, -10, 0, -20, 2, 5, 15);
+	//t2 = new LSystem("B", "AA", "Ax[-B/]x+B", 10, 40, 10, 0, 20, 2, 5, 15);
+	t3 = new LSystem("B", "AA", "Ax[-B/]x+B", 10, 20, -10, 0, 20, 2, 5, 15);
+
+	t4 = new LSystem("B", "AA", "Ax[-B/]x+[B]-B", 10, 40, 10, 0, -20, 2, 5, 15);
+	t5 = new LSystem("B", "AA", "Ax[-B/]x+[B]-B", 10, 20, 20, 0, 0, 2, 5, 15);
+	//t6 = new LSystem("B", "AA", "Ax[-B/]x+[B]-B", 10, 30, -15, 0, 0, 2, 5, 15);
+
+	t7 = new LSystem("B", "AA", "AA+x[/+B-/B-B]x-[-xB+B+B]", 3, 15, -15, 0, 0, 2, 5, 15);
+	//t8 = new LSystem("B", "AA", "AA+x[/+B-/B-B]x-[-xB+B+B]", 3, 15, -8, 4, -5, 1, 5, 15);
+	t2 = new LSystem("B", "AA", "AA+x[/+B-/B-B]x-[-xB+B+B]", 3, 30, 10, 0, 20, 2, 5, 15);
+
+	// Sound Engine
+	SoundEngine = irrklang::createIrrKlangDevice();
 
 	// Sky box faces
 	std::vector<const GLchar*> faces;
@@ -200,13 +227,27 @@ void Window::display_callback(GLFWwindow* window)
 	float distance = 2 * (camera->getPosition().y - water->getHeight());
 	camera->setPosition(glm::vec3(camera->getPosition().x, camera->getPosition().y - distance, camera->getPosition().z));
 
+	// Skybox
 	skyBox->draw();
 
+	if (!stopTrees)
+	{
+		// L System
+		t1->draw();
+		t2->draw();
+		t3->draw();
+		t4->draw();
+		t5->draw();
+		t7->draw();
+	}
 
 	// Wedding cake
 	weddingCake->draw();
 
-	water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 0.2f));
+	if (!stopWater)
+	{
+		water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 0.2f));
+	}
 
 	// Move camera back to normal
 	camera->setPosition(glm::vec3(camera->getPosition().x, camera->getPosition().y + distance, camera->getPosition().z));
@@ -214,25 +255,53 @@ void Window::display_callback(GLFWwindow* window)
 	// Get refraction
 	waterFB->bindRefractionFrameBuffer();
 
+	// Skybox
 	skyBox->draw();
 
+	if (!stopTrees)
+	{
+		// L System
+		t1->draw();
+		t2->draw();
+		t3->draw();
+		t4->draw();
+		t5->draw();
+		t7->draw();
+	}
 
 	// Wedding cake
 	weddingCake->draw();
 
-	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 0.2f));
+	if (!stopWater)
+	{
+		water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 0.2f));
+	}
 
 	// Get entire scene
 	waterFB->unbindCurrentFrameBuffer();
 	glDisable(GL_CLIP_DISTANCE0);
-	
 
+	// Skybox
 	skyBox->draw();
 
+	if (!stopTrees)
+	{
+		// L System
+		t1->draw();
+		t2->draw();
+		t3->draw();
+		t4->draw();
+		t5->draw();
+		t7->draw();
+
+	}
 	// Wedding cake
 	weddingCake->draw();
 
-	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, 100.0f));
+	if (!stopWater)
+	{
+		water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, 100.0f));
+	}
 
 	// Gets events, including input such as keyboard and mouse or window resizing
 	glfwPollEvents();
@@ -255,10 +324,69 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
 
+		if (key == GLFW_KEY_T) //r
+		{
+			SoundEngine->play2D("sound/MLS.ogg", GL_TRUE);
+		}
+		if (key == GLFW_KEY_E) //r
+		{
+			SoundEngine->stopAllSounds();
+			SoundEngine->play2D("sound/quack.mp3", GL_FALSE);
+			SoundEngine->play2D("sound/quack.mp3", GL_FALSE);
+		}
+		if (key == GLFW_KEY_W) //r
+		{
+			SoundEngine->play2D("sound/water1.mp3", GL_TRUE);
+		}
+		if (key == GLFW_KEY_Q) //r
+		{
+			SoundEngine->play2D("sound/bird1.mp3", GL_FALSE);
+		}
+		if (key == GLFW_KEY_M)
+		{
+			SoundEngine->stopAllSounds();
+		}
+		if (key == GLFW_KEY_P)
+		{
+			if (!paused)
+			{
+				paused = true;
+				SoundEngine->setAllSoundsPaused(true);
+			}
+			else
+			{
+				paused = false;
+				SoundEngine->setAllSoundsPaused(false);
+			}
+		}
+
 		// Stop key
 		if (key == GLFW_KEY_S)
 		{
 			stop = !stop;
+		}
+
+		// Stop trees
+		if (key == GLFW_KEY_X)
+		{
+			stopTrees = !stopTrees;
+		}
+
+		// Stop water
+		if (key == GLFW_KEY_Z)
+		{
+			stopWater = !stopWater;
+		}
+
+		// Redraw trees
+		if (key == GLFW_KEY_L)
+		{
+			t1->redraw();
+			t2->redraw();
+			t3->redraw();
+			t4->redraw();
+			t5->redraw();
+			t7->redraw();
 		}
 	}
 }

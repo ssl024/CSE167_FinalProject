@@ -28,7 +28,7 @@ void main()
 		color = vec4(0.0, 0.0, 0.0, 1.0);
 
 	float edgeChecker = dot(normalize(cameraPosition), normalize(Normal));
-	if(-0.30 < edgeChecker && edgeChecker < 0.30)
+	if(-0.5 < edgeChecker && edgeChecker < 0.5)
 	{
 	    color = vec4(0.0, 0.0, 0.0, 1.0);
 	}

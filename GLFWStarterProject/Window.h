@@ -14,6 +14,8 @@
 #include "WaterFrameBuffer.h"
 #include "OBJObject.h"
 #include "WeddingCake.h"
+#include "LSystem.h"
+#include <irrKlang.h>
 
 class Window
 {

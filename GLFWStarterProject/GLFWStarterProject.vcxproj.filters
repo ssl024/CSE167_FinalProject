@@ -52,6 +52,18 @@
     <None Include="dragonShader.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="shader3.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="shader3.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="shader4.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="shader4.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
@@ -102,6 +114,9 @@
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp">
@@ -150,6 +165,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
