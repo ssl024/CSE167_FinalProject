@@ -28,4 +28,6 @@ void main() {
 	gl_ClipDistance[0] = dot(worldPosition, clippingPlane);
 
 	textureCoordinates = vec2(position.x/2.0 + 0.5, position.y/2.0 + 0.5) * tiling;
+
+	toCameraVector = cameraPosition - worldPosition.xyz;
 }

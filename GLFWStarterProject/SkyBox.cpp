@@ -61,8 +61,8 @@ SkyBox::SkyBox(std::vector<const GLchar*> faces)
 	textureId = loadSkyBox(faces);
 
 	// Single side rendering
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 }
 
 SkyBox::~SkyBox() {}

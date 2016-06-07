@@ -37,7 +37,7 @@ GLuint indices[] = {  // Note that we start from 0!
 
 Cube::Cube()
 {
-	this->toWorld = glm::mat4(1.0f);
+	this->toWorld = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 20.0f, 0.0f)) * glm::mat4(1.0f);
 
 	this->angle = 0.0f;
 

@@ -1,7 +1,13 @@
 #include "window.h"
 
 const char* window_title = "GLFW Starter Project";
+
+// Objects
 Cube * cube;
+OBJObject * cylinderObj;
+OBJObject * podObj;
+OBJObject * bearObj;
+WeddingCake * weddingCake;
 
 // Camera
 Camera * camera;
@@ -30,7 +36,12 @@ void Window::initialize_objects()
 {
 	// Camera with default parameters
 	camera = new Camera();
+
+	// Objects
 	cube = new Cube();
+	cylinderObj = new OBJObject("cylinder.obj");
+	podObj = new OBJObject("pod.obj");
+	bearObj = new OBJObject("bear.obj");
 
 	// Sky box faces
 	std::vector<const GLchar*> faces;
@@ -54,11 +65,19 @@ void Window::initialize_objects()
 	shaderProgram = LoadShaders("shader.vert", "shader.frag");
 #endif
 
+	// Object shaders
+	cylinderObj->setShaderProgram(cubeShader->getShaderProgram());
+	podObj->setShaderProgram(cubeShader->getShaderProgram());
+	bearObj->setShaderProgram(cubeShader->getShaderProgram());
+
+	// Create wedding cake
+	weddingCake = new WeddingCake(cylinderObj, podObj, bearObj, cubeShader->getShaderProgram());
+
 	// Set skybox shader
 	skyBox->setSkyBoxShader(skyBoxShader->getShaderProgram());
 
 	// Create water frame buffer
-	waterFB = new WaterFrameBuffer("waterdudv2.ppm");
+	waterFB = new WaterFrameBuffer("waterdudv.ppm");
 
 	// Create water
 	water = new WaterTile(0.0f, 0.0f, 0.0f, waterShader, waterFB);
@@ -146,8 +165,9 @@ void Window::idle_callback()
 {
 	camera->update();
 	V = camera->getLookAt();
-	// Call the update function the cube
-	//cube->update();
+
+	// Update wedding cake
+	weddingCake->update();
 }
 
 void Window::display_callback(GLFWwindow* window)
@@ -168,6 +188,14 @@ void Window::display_callback(GLFWwindow* window)
 
 	skyBox->draw();
 
+	// Cube
+	cubeShader->start();
+	cube->draw(cubeShader->getShaderProgram());
+
+	// Wedding cake
+	weddingCake->draw();
+	cubeShader->stop();
+
 	water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 0.2f));
 
 	// Move camera back to normal
@@ -178,23 +206,32 @@ void Window::display_callback(GLFWwindow* window)
 
 	skyBox->draw();
 
+	// Cube
+	cubeShader->start();
+	cube->draw(cubeShader->getShaderProgram());
+
+	// Wedding cake
+	weddingCake->draw();
+	cubeShader->stop();
+
 	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 0.2f));
 
 	// Get entire scene
 	waterFB->unbindCurrentFrameBuffer();
 	glDisable(GL_CLIP_DISTANCE0);
-
-	// Use the shader of programID
-	//waterShader->start();
 	
-	// Render the cube
-	//cube->draw(waterShader->getShaderProgram());
 
 	skyBox->draw();
 
-	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, 100.0f));
+	// Cube
+	cubeShader->start();
+	cube->draw(cubeShader->getShaderProgram());
 
-	// Draw water
+	// Wedding cake
+	weddingCake->draw();
+	cubeShader->stop();
+
+	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, 100.0f));
 
 	// Gets events, including input such as keyboard and mouse or window resizing
 	glfwPollEvents();

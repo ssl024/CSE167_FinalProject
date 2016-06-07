@@ -12,6 +12,8 @@
 #include "SkyBox.h"
 #include "WaterTile.h"
 #include "WaterFrameBuffer.h"
+#include "OBJObject.h"
+#include "WeddingCake.h"
 
 class Window
 {

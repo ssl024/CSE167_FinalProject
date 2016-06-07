@@ -2,9 +2,9 @@
 
 #include "Window.h"
 
-const float WaterTile::TILE_SIZE = 60.0f;
+const float WaterTile::TILE_SIZE = 50.0f;
 
-const float WaterTile::WATER_SPEED = 0.0002f;
+const float WaterTile::WATER_SPEED = 0.0001f;
 
 GLfloat waterVertices[] = { -1, -1, 0,
 							-1, 1, 0,
@@ -40,6 +40,14 @@ void WaterTile::draw(Camera * camera, glm::vec4 clipPlane)
 	if (moveFactor > 1.0f)
 		moveFactor = 0.0f;
 
+	// Activate texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, waterFB->getReflectionTexture());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, waterFB->getRefractionTexture());
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, waterFB->getdudvMapTexture());
+
 	// Activate shader program
 	waterShader->start();
 
@@ -53,13 +61,6 @@ void WaterTile::draw(Camera * camera, glm::vec4 clipPlane)
 	waterShader->loadCameraPosition(camera->getPosition());
 	waterShader->loadMoveFactor(moveFactor);
 
-	// Activate texture
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, waterFB->getReflectionTexture());
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, waterFB->getRefractionTexture());
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, waterFB->getdudvMapTexture());
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -35,7 +35,6 @@ private:
 	GLint locationRefractionTexture;
 
 	GLint locationdudvMap;
-
 	GLint locationMoveFactor;
 
 	/*
