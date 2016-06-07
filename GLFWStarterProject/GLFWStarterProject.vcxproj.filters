@@ -34,6 +34,12 @@
     <None Include="skyBoxShader.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="toonShader.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="toonShader.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">

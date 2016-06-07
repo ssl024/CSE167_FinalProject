@@ -24,6 +24,8 @@
     <None Include="shader.vert" />
     <None Include="skyBoxShader.frag" />
     <None Include="skyBoxShader.vert" />
+    <None Include="toonShader.frag" />
+    <None Include="toonShader.vert" />
     <None Include="water.frag" />
     <None Include="water.vert" />
   </ItemGroup>

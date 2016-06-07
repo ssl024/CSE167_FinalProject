@@ -10,6 +10,8 @@
 #include <fstream>
 #include <string>
 
+#include "Camera.h"
+
 struct Vertex {
 	glm::vec3 position, normal;
 };

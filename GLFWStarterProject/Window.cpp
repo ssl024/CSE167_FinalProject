@@ -25,6 +25,10 @@ WaterFrameBuffer * waterFB;
 ShaderProgram * cubeShader;
 ShaderProgram * skyBoxShader;
 WaterShader * waterShader;
+ShaderProgram * toonShader;
+
+// Flags
+bool stop = false;
 
 int Window::width;
 int Window::height;
@@ -61,17 +65,18 @@ void Window::initialize_objects()
 	cubeShader = new ShaderProgram("shader.vert", "shader.frag");
 	skyBoxShader = new ShaderProgram("skyBoxShader.vert", "skyBoxShader.frag");
 	waterShader = new WaterShader("water.vert", "water.frag");
+	toonShader = new ShaderProgram("toonShader.vert", "toonShader.frag");
 #else // Not windows
 	shaderProgram = LoadShaders("shader.vert", "shader.frag");
 #endif
 
 	// Object shaders
-	cylinderObj->setShaderProgram(cubeShader->getShaderProgram());
-	podObj->setShaderProgram(cubeShader->getShaderProgram());
-	bearObj->setShaderProgram(cubeShader->getShaderProgram());
+	cylinderObj->setShaderProgram(toonShader->getShaderProgram());
+	podObj->setShaderProgram(toonShader->getShaderProgram());
+	bearObj->setShaderProgram(toonShader->getShaderProgram());
 
 	// Create wedding cake
-	weddingCake = new WeddingCake(cylinderObj, podObj, bearObj, cubeShader->getShaderProgram());
+	weddingCake = new WeddingCake(cylinderObj, podObj, bearObj, toonShader->getShaderProgram());
 
 	// Set skybox shader
 	skyBox->setSkyBoxShader(skyBoxShader->getShaderProgram());
@@ -167,7 +172,8 @@ void Window::idle_callback()
 	V = camera->getLookAt();
 
 	// Update wedding cake
-	weddingCake->update();
+	if(!stop)
+		weddingCake->update();
 }
 
 void Window::display_callback(GLFWwindow* window)
@@ -191,10 +197,12 @@ void Window::display_callback(GLFWwindow* window)
 	// Cube
 	cubeShader->start();
 	cube->draw(cubeShader->getShaderProgram());
+	cubeShader->stop();
 
 	// Wedding cake
+	toonShader->start();
 	weddingCake->draw();
-	cubeShader->stop();
+	toonShader->stop();
 
 	water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 0.2f));
 
@@ -209,10 +217,12 @@ void Window::display_callback(GLFWwindow* window)
 	// Cube
 	cubeShader->start();
 	cube->draw(cubeShader->getShaderProgram());
+	cubeShader->stop();
 
 	// Wedding cake
+	toonShader->start();
 	weddingCake->draw();
-	cubeShader->stop();
+	toonShader->stop();
 
 	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 0.2f));
 
@@ -226,10 +236,12 @@ void Window::display_callback(GLFWwindow* window)
 	// Cube
 	cubeShader->start();
 	cube->draw(cubeShader->getShaderProgram());
+	cubeShader->stop();
 
 	// Wedding cake
+	toonShader->start();
 	weddingCake->draw();
-	cubeShader->stop();
+	toonShader->stop();
 
 	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, 100.0f));
 
@@ -252,6 +264,12 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 		{
 			// Close the window. This causes the program to also terminate.
 			glfwSetWindowShouldClose(window, GL_TRUE);
+		}
+
+		// Stop key
+		if (key == GLFW_KEY_S)
+		{
+			stop = !stop;
 		}
 	}
 }
@@ -278,4 +296,9 @@ void Window::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	// Inform camera of scroll
 	camera->scroll_callback(xoffset, yoffset);
+}
+
+Camera * Window::getCamera()
+{
+	return camera;
 }

@@ -35,6 +35,9 @@ public:
 	static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 	// Scroll callback
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
+	// Get the scene camera
+	static Camera* getCamera();
 };
 
 #endif

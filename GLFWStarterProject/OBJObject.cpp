@@ -226,9 +226,12 @@ void OBJObject::draw(glm::mat4 transformMatrix)
 	glm::mat4 view = Window::V;
 	glm::mat4 projection = Window::P;
 
+	// Get camera position
+	Camera* camera = Window::getCamera();
+	glm::vec3 cameraPosition = camera->getPosition();
+
 	glUseProgram(shaderProgram);
 
-	/*
 	GLuint modelID = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(modelID, 1, GL_FALSE, &model[0][0]);
 
@@ -237,11 +240,9 @@ void OBJObject::draw(glm::mat4 transformMatrix)
 
 	GLuint projectionID = glGetUniformLocation(shaderProgram, "projection");
 	glUniformMatrix4fv(projectionID, 1, GL_FALSE, &projection[0][0]);
-	*/
 
-	glm::mat4 MVP = projection * view * model;
-	GLuint MatrixID = glGetUniformLocation(shaderProgram, "MVP");
-	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+	GLuint cameraID = glGetUniformLocation(shaderProgram, "cameraPosition");
+	glUniform3f(cameraID, cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, (GLsizei)faces.size(), GL_UNSIGNED_INT, 0);
