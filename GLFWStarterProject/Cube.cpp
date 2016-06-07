@@ -37,7 +37,7 @@ GLuint indices[] = {  // Note that we start from 0!
 
 Cube::Cube()
 {
-	this->toWorld = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 20.0f, 0.0f)) * glm::mat4(1.0f);
+	this->toWorld = glm::mat4(1.0f);
 
 	this->angle = 0.0f;
 
@@ -103,6 +103,10 @@ void Cube::spin(float deg)
 	if (this->angle > 360.0f || this->angle < -360.0f) this->angle = 0.0f;
 	// This creates the matrix to rotate the cube. You'd probably want to change this with the more favorable way of performing a spin
 	// which you did in the previous project.
-	this->toWorld = glm::rotate(glm::mat4(1.0f), this->angle / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 1.0f, 0.0f));
+	this->toWorld = toWorld * glm::rotate(glm::mat4(1.0f), 1.0f / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
+void Cube::setToWorld(glm::mat4 toWorld)
+{
+	this->toWorld = toWorld;
+}

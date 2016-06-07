@@ -8,6 +8,7 @@
 
 class Cube
 {
+private:
 public:
 	Cube();
 	~Cube();
@@ -19,6 +20,8 @@ public:
 	void draw(GLuint);
 	void update();
 	void spin(float);
+
+	void setToWorld(glm::mat4 toWorld);
 };
 
 #endif

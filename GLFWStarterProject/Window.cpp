@@ -7,6 +7,8 @@ Cube * cube;
 OBJObject * cylinderObj;
 OBJObject * podObj;
 OBJObject * bearObj;
+OBJObject * bunnyObj;
+OBJObject * dragonObj;
 WeddingCake * weddingCake;
 
 // Camera
@@ -26,9 +28,12 @@ ShaderProgram * cubeShader;
 ShaderProgram * skyBoxShader;
 WaterShader * waterShader;
 ShaderProgram * toonShader;
+ShaderProgram * bunnyShader;
+ShaderProgram * dragonShader;
 
 // Flags
 bool stop = false;
+
 
 int Window::width;
 int Window::height;
@@ -42,10 +47,11 @@ void Window::initialize_objects()
 	camera = new Camera();
 
 	// Objects
-	cube = new Cube();
 	cylinderObj = new OBJObject("cylinder.obj");
 	podObj = new OBJObject("pod.obj");
 	bearObj = new OBJObject("bear.obj");
+	bunnyObj = new OBJObject("bunny.obj");
+	dragonObj = new OBJObject("dragon.obj");
 
 	// Sky box faces
 	std::vector<const GLchar*> faces;
@@ -66,6 +72,8 @@ void Window::initialize_objects()
 	skyBoxShader = new ShaderProgram("skyBoxShader.vert", "skyBoxShader.frag");
 	waterShader = new WaterShader("water.vert", "water.frag");
 	toonShader = new ShaderProgram("toonShader.vert", "toonShader.frag");
+	bunnyShader = new ShaderProgram("bunnyShader.vert", "bunnyShader.frag");
+	dragonShader = new ShaderProgram("dragonShader.vert", "dragonShader.frag");
 #else // Not windows
 	shaderProgram = LoadShaders("shader.vert", "shader.frag");
 #endif
@@ -74,9 +82,11 @@ void Window::initialize_objects()
 	cylinderObj->setShaderProgram(toonShader->getShaderProgram());
 	podObj->setShaderProgram(toonShader->getShaderProgram());
 	bearObj->setShaderProgram(toonShader->getShaderProgram());
+	bunnyObj->setShaderProgram(bunnyShader->getShaderProgram());
+	dragonObj->setShaderProgram(dragonShader->getShaderProgram());
 
 	// Create wedding cake
-	weddingCake = new WeddingCake(cylinderObj, podObj, bearObj, toonShader->getShaderProgram());
+	weddingCake = new WeddingCake(cylinderObj, podObj, bearObj, bunnyObj, dragonObj, toonShader->getShaderProgram());
 
 	// Set skybox shader
 	skyBox->setSkyBoxShader(skyBoxShader->getShaderProgram());
@@ -87,13 +97,11 @@ void Window::initialize_objects()
 	// Create water
 	water = new WaterTile(0.0f, 0.0f, 0.0f, waterShader, waterFB);
 
-	
 }
 
 void Window::clean_up()
 {
 	// Delete objects
-	delete(cube);
 	delete(skyBox);
 
 	// Delete shaders
@@ -194,15 +202,9 @@ void Window::display_callback(GLFWwindow* window)
 
 	skyBox->draw();
 
-	// Cube
-	cubeShader->start();
-	cube->draw(cubeShader->getShaderProgram());
-	cubeShader->stop();
 
 	// Wedding cake
-	toonShader->start();
 	weddingCake->draw();
-	toonShader->stop();
 
 	water->draw(camera, glm::vec4(0.0f, 1.0f, 0.0f, -water->getHeight() - 0.2f));
 
@@ -214,15 +216,9 @@ void Window::display_callback(GLFWwindow* window)
 
 	skyBox->draw();
 
-	// Cube
-	cubeShader->start();
-	cube->draw(cubeShader->getShaderProgram());
-	cubeShader->stop();
 
 	// Wedding cake
-	toonShader->start();
 	weddingCake->draw();
-	toonShader->stop();
 
 	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, water->getHeight() + 0.2f));
 
@@ -233,15 +229,8 @@ void Window::display_callback(GLFWwindow* window)
 
 	skyBox->draw();
 
-	// Cube
-	cubeShader->start();
-	cube->draw(cubeShader->getShaderProgram());
-	cubeShader->stop();
-
 	// Wedding cake
-	toonShader->start();
 	weddingCake->draw();
-	toonShader->stop();
 
 	water->draw(camera, glm::vec4(0.0f, -1.0f, 0.0f, 100.0f));
 

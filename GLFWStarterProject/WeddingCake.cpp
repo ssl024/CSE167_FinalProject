@@ -1,10 +1,12 @@
 #include "WeddingCake.h"
 
-WeddingCake::WeddingCake(OBJObject* cylinderObj, OBJObject* podObj, OBJObject* bearObj, GLuint shaderProgram)
+WeddingCake::WeddingCake(OBJObject* cylinderObj, OBJObject* podObj, OBJObject* bearObj, OBJObject* bunnyObj, OBJObject* dragonObj, GLuint shaderProgram)
 {
 	this->cylinderObj = cylinderObj;
 	this->podObj = podObj;
 	this->bearObj = bearObj;
+	this->bunnyObj = bunnyObj;
+	this->dragonObj = dragonObj;
 	this->shaderProgram = shaderProgram;
 
 	this->initialize();
@@ -99,6 +101,11 @@ void WeddingCake::initialize()
 {
 	// Bear
 	bear = new Geode(bearObj, shaderProgram);
+
+	// Bunny
+	bunny = new Geode(bunnyObj, bunnyObj->getShaderProgram());
+	// Dragon
+	dragon = new Geode(dragonObj, dragonObj->getShaderProgram());
 
 	// Poles
 	for (int i = 0; i < NUM_POLES; ++i)
@@ -274,6 +281,17 @@ void WeddingCake::initialize()
 		levelTranslate[i]->addChild(levelRotate[i]);
 	}
 
+	// Bunny transform
+	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
+	glm::mat4 move = glm::translate(scale, glm::vec3(5.0f, 0.0f, -5.0f));
+	bunnyTransform = new MatrixTransform(move);
+	bunnyTransform->addChild(bunny);
+
+	// Dragon transform
+	move = glm::translate(scale, glm::vec3(-5.0f, 0.0f, -5.0f));
+	dragonTransform = new MatrixTransform(move);
+	dragonTransform->addChild(dragon);
+
 	// Root
 	root = new Group();
 	rootTranslate = new MatrixTransform(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 17.0f, 0.0f)));
@@ -282,6 +300,9 @@ void WeddingCake::initialize()
 		//root->addChild(levelTranslate[i]);
 		rootTranslate->addChild(levelTranslate[i]);
 	}
+
+	rootTranslate->addChild(bunnyTransform);
+	rootTranslate->addChild(dragonTransform);
 
 	root->addChild(rootTranslate);
 

@@ -48,6 +48,7 @@ public:
 	void update();
 
 	void setShaderProgram(GLuint shaderProgram);
+	GLuint getShaderProgram();
 };
 
 #endif

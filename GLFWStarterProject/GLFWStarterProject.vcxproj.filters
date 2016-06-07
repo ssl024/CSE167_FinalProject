@@ -40,6 +40,18 @@
     <None Include="toonShader.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="bunnyShader.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="bunnyShader.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="dragonShader.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="dragonShader.vert">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
@@ -55,9 +67,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OBJObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgram.h">
@@ -108,9 +117,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OBJObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShaderProgram.cpp">

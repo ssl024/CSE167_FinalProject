@@ -28,7 +28,7 @@ public:
 	static const int NUM_FINGER_AND_POD = 27;
 	static const int NUM_ENTIRE_ARMS = 9;
 
-	WeddingCake(OBJObject* cylinderObj, OBJObject* podObj, OBJObject* bearObj, GLuint shaderProgram);
+	WeddingCake(OBJObject* cylinderObj, OBJObject* podObj, OBJObject* bearObj, OBJObject* bunnyObj, OBJObject* dragonObj, GLuint shaderProgram);
 	~WeddingCake();
 
 	void update();
@@ -43,6 +43,14 @@ private:
 	OBJObject* cylinderObj;
 	OBJObject* podObj;
 	OBJObject* bearObj;
+	OBJObject* bunnyObj;
+	OBJObject* dragonObj;
+
+	// Other geodes
+	Geode* bunny;
+	MatrixTransform* bunnyTransform;
+	Geode* dragon;
+	MatrixTransform* dragonTransform;
 
 	// Which shader program to use
 	GLuint shaderProgram;

@@ -247,6 +247,8 @@ void OBJObject::draw(glm::mat4 transformMatrix)
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, (GLsizei)faces.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+
+	glUseProgram(0);
 }
 
 void OBJObject::update()
@@ -257,4 +259,9 @@ void OBJObject::update()
 void OBJObject::setShaderProgram(GLuint shaderProgram)
 {
 	this->shaderProgram = shaderProgram;
+}
+
+GLuint OBJObject::getShaderProgram()
+{
+	return this->shaderProgram;
 }
